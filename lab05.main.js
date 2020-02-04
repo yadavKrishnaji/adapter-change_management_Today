@@ -156,10 +156,7 @@ class ServiceNowAdapter extends EventEmitter {
     if (error) {
       console.error(`\nError returned from GET request:\n${JSON.stringify(error)}`);
     }
-
     console.log(`\nResponse returned from GET request:\n${JSON.stringify(data)}`)
-    var jsonstring = JSON.parse(JSON.stringify(data));
-    return this.setResultsData(jsonstring);
   })
   
   }
@@ -180,34 +177,12 @@ class ServiceNowAdapter extends EventEmitter {
      * Note how the object was instantiated in the constructor().
      * post() takes a callback function.
      */
-     return this.connector.post( (data, error) => {
+     this.connector.post( (data, error) => {
     if (error) {
       console.error(`\nError returned from POST request:\n${JSON.stringify(error)}`);
     }
     console.log(`\nResponse returned from POST request:\n${JSON.stringify(data)}`)
-     var jsonstring = JSON.parse(JSON.stringify(data));
-    var body=jsonstring.body;
-    var results=JSON.parse(body);
-    return results;
-    
   });
-  }
-  setResultsData(jsonstring){
-       
-    var body=jsonstring.body;
-    var results=JSON.parse(body);
-    var result={
-        "change_ticket_number":results['result'][0].number,
-            "active": results['result'][0].active,
-            "priority": results['result'][0].priority,
-        "description": results['result'][0].description,
-        "work_start": results['result'][0].work_start,
-        "work_end": results['result'][0].work_end,
-        "change_ticket_key": results['result'][0].sys_id
-
-    }
-    return result;
-    //console.log(result);
   }
 }
 
